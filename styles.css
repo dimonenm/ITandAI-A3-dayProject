@@ -1,8 +1,8 @@
 :root {
-  --accent: #ff6b4a;
-  --bg-color: #0b0b0b;
+  --accent: #B85042;
+  --bg-color: #A7BEAE;
   --text-color: #f5f5f5;
-  --muted-text: #b0b0b0;
+  --muted-text: #b5b5b5;
   /* Позиция центра фонового градиента (будем менять из JS) */
   --bg-gradient-x: 20%;
   --bg-gradient-y: 0%;
@@ -21,7 +21,7 @@
 body {
   min-height: 100vh;
   background: radial-gradient(circle at var(--bg-gradient-x) var(--bg-gradient-y),
-      #1b1b1b,
+      #2b2b2b,
       var(--bg-color));
   color: var(--text-color);
   font-family: var(--font-main);
@@ -47,14 +47,15 @@ body {
 .hero::before {
   content: "";
   position: absolute;
-  width: 420px;
-  height: 420px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
   /* Делаем пятно ярче, чтобы его однозначно было видно */
-  background: radial-gradient(circle, rgba(255, 107, 74, 0.4), transparent);
+  background: radial-gradient(circle, #fff, transparent);
   top: 10%;
   left: 60%;
-  transform: translate(-50%, -50%);
-  filter: blur(4px);
+  transform: translate(-75%, -75%);
+  filter: blur(10px);
   opacity: 0.7;
   pointer-events: none;
   /* Ускоряем и усиливаем движение свечения, чтобы эффект был заметнее */
