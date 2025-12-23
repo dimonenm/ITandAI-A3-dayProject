@@ -23,7 +23,11 @@ function loadSkills() {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return []
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : []
+    if (!Array.isArray(parsed)) return []
+    return parsed.map((item) => ({
+      ...item,
+      done: Boolean(item.done),
+    }))
   } catch {
     return []
   }
@@ -45,6 +49,36 @@ function createSkillCard(skill) {
   const card = document.createElement("article")
   card.className = "skill-card"
   card.dataset.id = skill.id
+
+  const removeBtn = document.createElement("button")
+  removeBtn.className = "skill-card__remove"
+  removeBtn.type = "button"
+  removeBtn.title = "Удалить навык"
+  removeBtn.setAttribute("aria-label", "Удалить навык")
+  removeBtn.textContent = "×"
+  removeBtn.addEventListener("click", (event) => {
+    event.stopPropagation()
+    const confirmed = window.confirm(`Удалить навык «${skill.title}»?`)
+    if (!confirmed) return
+    skillsState = skillsState.filter((item) => item.id !== skill.id)
+    saveSkills(skillsState)
+    renderSkills(skillsState)
+  })
+
+  const completeBtn = document.createElement("button")
+  completeBtn.className = "skill-card__complete"
+  completeBtn.type = "button"
+  completeBtn.title = "Отметить как освоено"
+  completeBtn.setAttribute("aria-label", "Отметить как освоено")
+  completeBtn.textContent = "✓"
+  completeBtn.addEventListener("click", (event) => {
+    event.stopPropagation()
+    skillsState = skillsState.map((item) =>
+      item.id === skill.id ? { ...item, done: !item.done } : item
+    )
+    saveSkills(skillsState)
+    renderSkills(skillsState)
+  })
 
   const meta = document.createElement("div")
   meta.className = "skill-card__meta"
@@ -70,6 +104,8 @@ function createSkillCard(skill) {
   status.appendChild(statusDot)
   status.appendChild(statusText)
 
+  card.appendChild(completeBtn)
+  card.appendChild(removeBtn)
   card.appendChild(meta)
   card.appendChild(title)
   card.appendChild(description)
@@ -79,6 +115,11 @@ function createSkillCard(skill) {
   card.addEventListener("click", () => {
     card.classList.toggle("skill-card--expanded")
   })
+
+  if (skill.done) {
+    card.classList.add("skill-card--done")
+    statusText.textContent = "освоено"
+  }
 
   return card
 }
@@ -105,18 +146,21 @@ if (!skillsState.length) {
       title: "HTML & семантика",
       description:
         "Умею строить аккуратную, семантическую разметку, которая понятна и браузеру, и человеку.",
+      done: false,
     },
     {
       id: "css",
       title: "Современный CSS",
       description:
         "Работаю с Flexbox, Grid, адаптивной версткой и небольшими анимациями для живого интерфейса.",
+      done: false,
     },
     {
       id: "js",
       title: "JavaScript основы",
       description:
         "Понимаю базовые концепции языка и умею добавлять интерактив к страницам без лишних библиотек.",
+      done: false,
     },
   ]
   saveSkills(skillsState)
@@ -140,6 +184,7 @@ if (addSkillButton) {
       id: `${Date.now()}-${Math.random().toString(16).slice(2)}`,
       title: title.trim(),
       description: description.trim(),
+      done: false,
     }
 
     skillsState = [newSkill, ...skillsState]
