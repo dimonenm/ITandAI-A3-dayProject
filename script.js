@@ -222,3 +222,136 @@ window.addEventListener("touchmove", (event) => {
   }
 }, { passive: true });
 
+// ===== Логика блока "Мой индекс навыков" =====
+
+const SKILL_INDEX_STORAGE_KEY = "skillIndexValues"
+
+const skillInputs = {
+  html: document.getElementById("skill-html"),
+  css: document.getElementById("skill-css"),
+  js: document.getElementById("skill-js"),
+  react: document.getElementById("skill-react"),
+  llm: document.getElementById("skill-llm"),
+}
+
+const skillValues = {
+  html: document.getElementById("value-html"),
+  css: document.getElementById("value-css"),
+  js: document.getElementById("value-js"),
+  react: document.getElementById("value-react"),
+  llm: document.getElementById("value-llm"),
+}
+
+const averageValue = document.getElementById("averageValue")
+const progressFill = document.getElementById("progressFill")
+const resultDescription = document.getElementById("resultDescription")
+
+/**
+ * Загрузка значений из localStorage
+ * @returns {Object}
+ */
+function loadSkillIndexValues() {
+  try {
+    const raw = window.localStorage.getItem(SKILL_INDEX_STORAGE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    return {
+      html: Number(parsed.html) || 0,
+      css: Number(parsed.css) || 0,
+      js: Number(parsed.js) || 0,
+      react: Number(parsed.react) || 0,
+      llm: Number(parsed.llm) || 0,
+    }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Сохранение значений в localStorage
+ * @param {Object} values
+ */
+function saveSkillIndexValues(values) {
+  window.localStorage.setItem(SKILL_INDEX_STORAGE_KEY, JSON.stringify(values))
+}
+
+/**
+ * Расчет среднего значения
+ * @param {Object} values
+ * @returns {number}
+ */
+function calculateAverage(values) {
+  const sum = values.html + values.css + values.js + values.react + values.llm
+  return Math.round(sum / 5)
+}
+
+/**
+ * Получение текстового описания на основе уровня
+ * @param {number} level
+ * @returns {string}
+ */
+function getLevelDescription(level) {
+  if (level >= 0 && level <= 25) {
+    return "Начинающий, верный старт"
+  } else if (level >= 26 && level <= 50) {
+    return "Прогрессируешь, держи темп"
+  } else if (level >= 51 && level <= 75) {
+    return "Уверенно растёшь, почти junior"
+  } else {
+    return "Сильная база — готов к портфолио"
+  }
+}
+
+/**
+ * Обновление всех значений и отображения
+ */
+function updateSkillIndex() {
+  const currentValues = {
+    html: Number(skillInputs.html.value),
+    css: Number(skillInputs.css.value),
+    js: Number(skillInputs.js.value),
+    react: Number(skillInputs.react.value),
+    llm: Number(skillInputs.llm.value),
+  }
+
+  // Обновление значений под слайдерами
+  skillValues.html.textContent = `${currentValues.html}%`
+  skillValues.css.textContent = `${currentValues.css}%`
+  skillValues.js.textContent = `${currentValues.js}%`
+  skillValues.react.textContent = `${currentValues.react}%`
+  skillValues.llm.textContent = `${currentValues.llm}%`
+
+  // Расчет и отображение среднего значения
+  const average = calculateAverage(currentValues)
+  averageValue.textContent = `${average}%`
+
+  // Обновление progress bar
+  progressFill.style.width = `${average}%`
+
+  // Обновление текстового описания
+  resultDescription.textContent = getLevelDescription(average)
+
+  // Сохранение в localStorage
+  saveSkillIndexValues(currentValues)
+}
+
+// Инициализация: загрузка значений из localStorage
+const savedValues = loadSkillIndexValues()
+if (savedValues) {
+  skillInputs.html.value = savedValues.html
+  skillInputs.css.value = savedValues.css
+  skillInputs.js.value = savedValues.js
+  skillInputs.react.value = savedValues.react
+  skillInputs.llm.value = savedValues.llm
+}
+
+// Добавление обработчиков событий для всех слайдеров
+Object.values(skillInputs).forEach((input) => {
+  if (input) {
+    input.addEventListener("input", updateSkillIndex)
+  }
+})
+
+// Первоначальное обновление для отображения текущих значений
+updateSkillIndex()
+

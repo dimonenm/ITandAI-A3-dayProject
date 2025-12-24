@@ -46,6 +46,57 @@
 
       <div class="skills__grid" id="skillsGrid"></div>
     </section>
+
+    <section class="skill-index" id="skillIndex">
+      <div class="skill-index__container">
+        <h2 class="skill-index__title">Мой индекс навыков</h2>
+
+        <div class="skill-index__gauges">
+          <div class="skill-gauge">
+            <label class="skill-gauge__label" for="skill-html">HTML</label>
+            <input type="range" id="skill-html" class="skill-gauge__input" min="0" max="100" value="0" />
+            <div class="skill-gauge__value" id="value-html">0%</div>
+          </div>
+
+          <div class="skill-gauge">
+            <label class="skill-gauge__label" for="skill-css">CSS</label>
+            <input type="range" id="skill-css" class="skill-gauge__input" min="0" max="100" value="0" />
+            <div class="skill-gauge__value" id="value-css">0%</div>
+          </div>
+
+          <div class="skill-gauge">
+            <label class="skill-gauge__label" for="skill-js">JS</label>
+            <input type="range" id="skill-js" class="skill-gauge__input" min="0" max="100" value="0" />
+            <div class="skill-gauge__value" id="value-js">0%</div>
+          </div>
+
+          <div class="skill-gauge">
+            <label class="skill-gauge__label" for="skill-react">React/Vue</label>
+            <input type="range" id="skill-react" class="skill-gauge__input" min="0" max="100" value="0" />
+            <div class="skill-gauge__value" id="value-react">0%</div>
+          </div>
+
+          <div class="skill-gauge">
+            <label class="skill-gauge__label" for="skill-llm">LLM/Нейросети</label>
+            <input type="range" id="skill-llm" class="skill-gauge__input" min="0" max="100" value="0" />
+            <div class="skill-gauge__value" id="value-llm">0%</div>
+          </div>
+        </div>
+
+        <div class="skill-index__result">
+          <div class="skill-index__result-header">
+            <span class="skill-index__result-label">Итоговый уровень:</span>
+            <span class="skill-index__result-value" id="averageValue">0%</span>
+          </div>
+          <div class="skill-index__progress-bar">
+            <div class="skill-index__progress-fill" id="progressFill"></div>
+          </div>
+          <div class="skill-index__result-description" id="resultDescription">
+            Начинающий, верный старт
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="script.js"></script>
