@@ -220,7 +220,7 @@ window.addEventListener("touchmove", (event) => {
   if (touch) {
     updateGradientPosition(touch.clientX, touch.clientY)
   }
-}, { passive: true });
+}, { passive: true })
 
 // ===== Логика блока "Мой индекс навыков" =====
 
@@ -232,6 +232,7 @@ const skillInputs = {
   js: document.getElementById("skill-js"),
   react: document.getElementById("skill-react"),
   llm: document.getElementById("skill-llm"),
+  typescript: document.getElementById("skill-typescript"),
 }
 
 const skillValues = {
@@ -240,6 +241,7 @@ const skillValues = {
   js: document.getElementById("value-js"),
   react: document.getElementById("value-react"),
   llm: document.getElementById("value-llm"),
+  typescript: document.getElementById("value-typescript"),
 }
 
 const averageValue = document.getElementById("averageValue")
@@ -261,6 +263,7 @@ function loadSkillIndexValues() {
       js: Number(parsed.js) || 0,
       react: Number(parsed.react) || 0,
       llm: Number(parsed.llm) || 0,
+      typescript: Number(parsed.typescript) || 0,
     }
   } catch {
     return null
@@ -281,8 +284,8 @@ function saveSkillIndexValues(values) {
  * @returns {number}
  */
 function calculateAverage(values) {
-  const sum = values.html + values.css + values.js + values.react + values.llm
-  return Math.round(sum / 5)
+  const sum = values.html + values.css + values.js + values.react + values.llm + values.typescript
+  return Math.round(sum / 6)
 }
 
 /**
@@ -312,6 +315,7 @@ function updateSkillIndex() {
     js: Number(skillInputs.js.value),
     react: Number(skillInputs.react.value),
     llm: Number(skillInputs.llm.value),
+    typescript: Number(skillInputs.typescript.value),
   }
 
   // Обновление значений под слайдерами
@@ -320,6 +324,7 @@ function updateSkillIndex() {
   skillValues.js.textContent = `${currentValues.js}%`
   skillValues.react.textContent = `${currentValues.react}%`
   skillValues.llm.textContent = `${currentValues.llm}%`
+  skillValues.typescript.textContent = `${currentValues.typescript}%`
 
   // Расчет и отображение среднего значения
   const average = calculateAverage(currentValues)
@@ -343,6 +348,7 @@ if (savedValues) {
   skillInputs.js.value = savedValues.js
   skillInputs.react.value = savedValues.react
   skillInputs.llm.value = savedValues.llm
+  skillInputs.typescript.value = savedValues.typescript
 }
 
 // Добавление обработчиков событий для всех слайдеров
